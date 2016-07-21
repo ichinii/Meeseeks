@@ -26,8 +26,8 @@ Logger&& operator<< (Logger &&logger, const T& item)
 
 class BasicLogProvider {
 private:
-	std::ostream& m_pNullOutBuffer;
-	std::ostream& m_pConsoleOutBuffer;
+	std::ostream &m_pNullOutBuffer;
+	std::ostream &m_pConsoleOutBuffer;
 
 public:
 	BasicLogProvider()

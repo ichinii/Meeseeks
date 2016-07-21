@@ -3,16 +3,59 @@
 
 #include <tuple>
 #include <util/traits.h>
+#include <assert.h>
+
+#define MACRO_DECLARE_PROVIDER_ACCESS(provider)                                       \
+template <typename T>                                                                 \
+inline                                                                                \
+typename std::enable_if< has_type< T*, provider::SubSystemPtrs >::value, T* >::type   \
+Get();                                                                                \
+                                                                                      \
+template <typename T>                                                                 \
+inline                                                                                \
+typename std::enable_if< has_type< T*, provider::SubSystemPtrs >::value, bool >::type \
+Set(T* ptr);
+
+#define MACRO_DEFINE_PROVIDER_ACCESS(provider)                                        \
+template <typename T>                                                                 \
+inline                                                                                \
+typename std::enable_if< has_type< T*, provider::SubSystemPtrs >::value, T* >::type   \
+Get()                                                                                 \
+{                                                                                     \
+  if(provider::s_pInstance)                                                           \
+    return std::get<T*>(provider::s_pInstance->m_SubSystems);                         \
+  return nullptr;                                                                     \
+}                                                                                     \
+                                                                                      \
+template <typename T>                                                                 \
+inline                                                                                \
+typename std::enable_if< has_type< T*, provider::SubSystemPtrs >::value, bool >::type \
+Set(T *ptr)                                                                           \
+{                                                                                     \
+  if(provider::s_pInstance)                                                           \
+  {                                                                                   \
+    std::get<T*>(provider::s_pInstance->m_SubSystems) = ptr;                          \
+    return true;                                                                      \
+  }                                                                                   \
+  return false;                                                                       \
+}
 
 template <typename ...Ts>
 class Provider {
-	template <typename T, typename Void>
-	friend T* Get();
-
-public:
+private:
+	using thisType = Provider<Ts...>;
 	using SubSystemPtrs = std::tuple<Ts*...>;
 
-private:
+	template <typename T>
+	friend
+	typename std::enable_if< has_type< T*, thisType::SubSystemPtrs >::value, T* >::type
+	Get();
+
+	template <typename T>
+	friend
+	typename std::enable_if< has_type< T*, thisType::SubSystemPtrs >::value, bool >::type
+	Set(T* ptr);
+
 	static Provider *s_pInstance;
 	SubSystemPtrs m_SubSystems;
 
@@ -56,22 +99,5 @@ void Provider<Ts...>::UnRegister(T* service)
 {
 	std::get<T*>(m_SubSystems) = nullptr;
 }
-
-// global declaration
-template <typename T, typename Void = void>
-inline T* Get();
-
-#define MACRO_REGISTER_PROVIDER(provider)                                                                     \
-template <typename T, typename = typename std::enable_if<has_type<T*, provider::SubSystemPtrs>::value>::type> \
-inline T* Get()                                                                                               \
-{                                                                                                             \
-  if(provider::s_pInstance)                                                                                   \
-    return std::get<T*>(provider::s_pInstance->m_SubSystems);                                                 \
-  return nullptr;                                                                                             \
-}
-
-// instantiate provider shared between client and server
-using SharedProvider = Provider<int>;
-MACRO_REGISTER_PROVIDER(SharedProvider)
 
 #endif
