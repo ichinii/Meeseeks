@@ -8,14 +8,12 @@ enum ShaderType {
 	FRAGMENT_SHADER = GL_FRAGMENT_SHADER
 };
 
-class Pipeline;
-
-GLuint LoadShaderFromFile(ShaderType type, const char *filepath);
-GLuint LoadShaderFromString(ShaderType type, const char *shadercode);
+GLuint LoadShaderFromFile(GLuint type, const char *filepath);
+GLuint LoadShaderFromString(GLuint type, const char *shadercode);
 
 class Shader {
 private:
-	friend Pipeline;
+	friend class Pipeline;
 
 	const ShaderType m_Type;
 	GLuint m_ShaderID;

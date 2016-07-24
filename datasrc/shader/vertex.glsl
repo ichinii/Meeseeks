@@ -1,11 +1,11 @@
-attribute vec3 vertexPosition;
-attribute vec3 vertexColor;
+attribute vec2 vertexPosition;
+attribute vec2 vertexUV;
 
 varying vec4 pos;
-varying vec4 color;
+varying vec2 uv;
 
 void main() {
-	pos = vec4(vertexPosition, 1);
-	color = vec4(vertexColor, 1);
+	pos = vec4(vertexPosition, 0, 1);
+	uv = vertexUV;
 	gl_Position = pos;
 }

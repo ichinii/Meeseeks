@@ -21,10 +21,12 @@ bool Graphics_Default::Init(int argc, char *argv[])
 	m_pWindow = new sf::Window(sf::VideoMode(800, 600), "Look at me!");
 	glewInit();
 
+	glClearColor(.1f, .2f, .3f, 1);
+
 	Shader vertexShader(VERTEX_SHADER);
 	Shader fragmentShader(FRAGMENT_SHADER);
-	vertexShader.LoadFromFile("data/shader/vertex.glsl");
-	fragmentShader.LoadFromFile("data/shader/fragment.glsl");
+	vertexShader.LoadFromFile("build/debug/data/shader/vertex.glsl");
+	fragmentShader.LoadFromFile("build/debug/data/shader/fragment.glsl");
 
 	m_pPolygonPipeline = new Pipeline();
 	m_pPolygonPipeline->AttachShader(vertexShader);
@@ -55,17 +57,21 @@ bool Graphics_Default::Shutdown()
 	return true;
 }
 
+void Graphics_Default::Clear()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
 void Graphics_Default::Display()
 {
+	m_pPolygonPoser->Flush();
 	m_pWindow->display();
 }
 
 void Graphics_Default::Flush()
 {
-	// upload
-	// render
+	m_pPolygonPoser->Flush();
 }
-
 
 void Graphics_Default::Draw(const Sprite &s, const Vec2 &pos)
 {

@@ -19,7 +19,9 @@ private:
 	size_t m_Size;
 	size_t m_Capacity;
 
-	//Pipeline m_Pipeline;
+	GLuint m_VertexGLBuffer;
+	GLuint m_UVGLBuffer;
+	GLuint m_VAO;
 
 public:
 	PolygonPoser(Pipeline *pPipeline);
@@ -28,8 +30,8 @@ public:
 	void SetBuffer(void *pBuffer, size_t size);
 	void Flush();
 	void Draw(const Sprite &s, const Vec2 &pos);
-	void Draw(Vec2 v0, Vec2 v1, Vec2 v2, Vec2 v3);
-	void Draw(Vec2 pos, Vec2 size);
+	//void Draw(Vec2 v0, Vec2 v1, Vec2 v2, Vec2 v3);
+	//void Draw(Vec2 pos, Vec2 size);
 };
 
 #endif

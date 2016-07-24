@@ -6,11 +6,11 @@
 
 class Sprite {
 public:
-	Vec2 m_Size;
+	Vec2 m_Pos[4];
+	Vec2 m_UV[4];
 
 	Sprite() = default;
 	Sprite(const Sprite& other) = default;
-	Sprite(Vec2 size) : m_Size(size) {}
 };
 
 #endif

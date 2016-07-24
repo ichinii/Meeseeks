@@ -61,7 +61,7 @@ private:
 
 public:
 	Provider() { s_pInstance = this; }
-	~Provider() { if(s_pInstance == this); s_pInstance = nullptr; }
+	~Provider() { if(s_pInstance == this) s_pInstance = nullptr; }
 
 	template <typename T>
 	T* Get();

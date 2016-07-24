@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
+#include <SFML/OpenGL.hpp>
 
 #include <util/vec.h>
 #include "../graphics.h"
@@ -27,6 +28,7 @@ public:
 
 	virtual bool Init(int argc, char *argv[]);
 	virtual bool Shutdown();
+	virtual void Clear();
 	virtual void Display();
 	virtual void Flush();
 	virtual void Draw(const Sprite &s, const Vec2 &pos);
