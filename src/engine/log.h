@@ -3,6 +3,9 @@
 
 #include <iostream>
 
+// TODO: rework
+// TODO: color warnings and errors with ansi escaping
+
 class Logger {
 	template <typename T>
 	friend Logger&& operator<< (Logger &&logger, const T &item);
@@ -11,8 +14,8 @@ private:
 	bool m_Endl;
 
 public:
-	Logger(std::ostream &os)            : m_OStream(os), m_Endl(false) {}
-	Logger(std::ostream &os, bool endl) : m_OStream(os), m_Endl(endl) {}
+	Logger(std::ostream &os)                                     : m_OStream(os), m_Endl(false) {}
+	Logger(std::ostream &os, bool endl, const char *prefix = "") : m_OStream(os), m_Endl(endl) { m_OStream << prefix; }
 	Logger(const Logger &) = default;
 	~Logger() { if(m_Endl) m_OStream << std::endl; }
 };
@@ -37,11 +40,11 @@ public:
 
 	std::ostream &GetNullOutBuffer() { return m_pNullOutBuffer; }
 	std::ostream &GetConsoleOutBuffer() { return m_pNullOutBuffer; }
-	Logger Info() { return Logger(m_pConsoleOutBuffer); }
-	Logger Debug() { return Logger(m_pConsoleOutBuffer); }
-	Logger Warning() { return Logger(m_pConsoleOutBuffer); }
-	Logger Error() { return Logger(m_pConsoleOutBuffer); }
-	Logger operator() () { return Info(); }
+	Logger Info() { return Logger(m_pConsoleOutBuffer, false,        "   [INFO] "); }
+	Logger Debug() { return Logger(m_pConsoleOutBuffer, false,       "  [DEBUG] "); }
+	Logger Warning() { return Logger(m_pConsoleOutBuffer, false,     "[WARNING] "); }
+	Logger Error() { return Logger(m_pConsoleOutBuffer, false,       "  [ERROR] "); }
+	Logger operator() () { return Logger(m_pConsoleOutBuffer, false, "          "); }
 };
 
 class LogProvider {
@@ -52,11 +55,11 @@ public:
 	LogProvider() : Base(m_BasicLogProvider) {}
 
 	BasicLogProvider &Base;
-	Logger Info() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true); }
-	Logger Debug() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true); }
-	Logger Warning() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true); }
-	Logger Error() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true); }
-	Logger operator() () { return Info(); }
+	Logger Info() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true,        "   [INFO] "); }
+	Logger Debug() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true,       "  [DEBUG] "); }
+	Logger Warning() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true,     "[WARNING] "); }
+	Logger Error() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true,       "  [ERROR] "); }
+	Logger operator() () { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true, "          "); }
 };
 
 static LogProvider Log;
