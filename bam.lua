@@ -91,14 +91,14 @@ shared_objs = Compile(settings, shared_srcs)
 
 PseudoTarget("server")
 server_objs = Compile(settings, server_srcs)
-server_exe = Link(settings, "mana_srv", TableFlatten({shared_objs, server_objs}))
+server_exe = Link(settings, "meeseeks_srv", TableFlatten({shared_objs, server_objs}))
 AddDependency("server", server_exe)
 
 GenerateClientSettings(settings)
 
 PseudoTarget("client")
 client_objs = Compile(settings, client_srcs)
-client_exe = Link(settings, "mana", TableFlatten({shared_objs, client_objs}))
+client_exe = Link(settings, "meeseeks", TableFlatten({shared_objs, client_objs}))
 AddDependency("client", client_exe)
 
 objs = TableFlatten({shared_objs, server_objs, client_objs})
