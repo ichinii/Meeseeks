@@ -1,16 +1,14 @@
 #ifndef UTIL_VEC_H
 #define UTIL_VEC_H
 
-#include <iostream>
 #include "math.h"
 
 template <typename T>
 class Vec2_base {
 public:
+	template <typename U>
+	Vec2_base(const Vec2_base<U> &v) : x(v.x), y(v.y) {}
 	Vec2_base() : x(0), y(0) {}
-	Vec2_base(const Vec2_base&) = default;
-	//template <typename U>
-	//Vec2_base(const Vec2_base<U> &v) : x(v.x), y(v.y) {}
 	Vec2_base(Vec2_base&&) = default;
 	Vec2_base(T nx, T ny) : x(nx), y(ny) {}
 
@@ -36,9 +34,6 @@ public:
 
 	bool operator== (const Vec2_base &v) { return x == v.x && y == v.y; }
 	bool operator!= (const Vec2_base &v) { return x != v.x || y != v.y; }
-
-	template <typename U>
-	explicit operator Vec2_base<U>() const { return Vec2_base<U>(static_cast<U>(x), static_cast<U>(y)); }
 };
 
 using Vec2 = Vec2_base<float>;

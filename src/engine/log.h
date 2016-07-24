@@ -1,5 +1,5 @@
-#ifndef ENGINE_LOG_H
-#define ENGINE_LOG_H
+#ifndef LOG_H
+#define LOG_H
 
 #include <iostream>
 
@@ -39,6 +39,7 @@ public:
 	std::ostream &GetConsoleOutBuffer() { return m_pNullOutBuffer; }
 	Logger Info() { return Logger(m_pConsoleOutBuffer); }
 	Logger Debug() { return Logger(m_pConsoleOutBuffer); }
+	Logger Warning() { return Logger(m_pConsoleOutBuffer); }
 	Logger Error() { return Logger(m_pConsoleOutBuffer); }
 	Logger operator() () { return Info(); }
 };
@@ -53,6 +54,7 @@ public:
 	BasicLogProvider &Base;
 	Logger Info() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true); }
 	Logger Debug() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true); }
+	Logger Warning() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true); }
 	Logger Error() { return Logger(m_BasicLogProvider.GetConsoleOutBuffer(), true); }
 	Logger operator() () { return Info(); }
 };

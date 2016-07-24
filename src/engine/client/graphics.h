@@ -12,8 +12,9 @@ public:
 
 	virtual bool Init(int argc, char *argv[]) = 0;
 	virtual bool Shutdown() = 0;
+	virtual void Display() = 0;
 	virtual void Flush() = 0;
-	//virtual void Draw(const Sprite &s);
+	virtual void Draw(const Sprite &s, const Vec2 &pos) = 0;
 };
 
 #endif

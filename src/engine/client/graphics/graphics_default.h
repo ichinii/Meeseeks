@@ -4,28 +4,32 @@
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
 
-#include "../graphics.h"
 #include <util/vec.h>
-#include "sprite.h"
-#include "renderer/spriterenderer.h"
+#include "../graphics.h"
+#include "poser/polygonposer.h"
+#include "pipeline.h"
+
+class Sprite;
 
 class Graphics_Default : public Graphics {
 private:
 	sf::Window *m_pWindow;
 
-	static const size_t BUFFER_SIZE = 1024;
+	Pipeline *m_pPolygonPipeline;
+	PolygonPoser *m_pPolygonPoser;
+
+	static const size_t BUFFER_SIZE = 1024 * 8;
 	void *m_pBuffer;
 
-	SpriteRenderer m_SpriteR;
-
 public:
-	~Graphics_Default() = default;
+	Graphics_Default();
+	virtual ~Graphics_Default();
 
-	bool Init(int argc, char *argv[]);
-	bool Shutdown();
-	void Flush();
-	void Draw(const Sprite &s);
-	//void Draw(Vec2 pos, Vec2 size) { m_SpriteR.Draw(pos, size); }
+	virtual bool Init(int argc, char *argv[]);
+	virtual bool Shutdown();
+	virtual void Display();
+	virtual void Flush();
+	virtual void Draw(const Sprite &s, const Vec2 &pos);
 };
 
 #endif
